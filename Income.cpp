@@ -6,29 +6,29 @@ Income::Income(){
     userId = 0;
     date = 0;
     item = "";
-    amount = 0.0f;
+    amount = 0.0d;
 }
 
 Income::~Income(){;}
 
-void Income::setIncomeId(int incomeId)
-{
+void Income::setIncomeId(int incomeId){
+
     this->incomeId = incomeId;
 }
 
-void Income::setUserId(int userId)
-{
+void Income::setUserId(int userId){
+
     this->userId = userId;
 }
 
-void Income::setDate(string enteredDate)
-{
+void Income::setDate(string enteredDate){
+
     Date date;
     this->date = date.convertDateFromStringWithDashToInt(enteredDate);
 }
 
-void Income::setItem(string item)
-{
+void Income::setItem(string item){
+
     this->item = item;
 }
 
@@ -42,6 +42,7 @@ int Income::getIncomeId(){
 
     return incomeId;
 }
+
 int Income::getUserId(){
 
     return userId;
@@ -86,7 +87,7 @@ void Income::enterItem(){
      string item = "";
      do
      {
-         cout << "Enter your item: "; cin.sync(); cin.clear();
+         cout << endl << "Enter your item: "; cin.sync(); cin.clear();
          getline(cin, item);
      }while(item == "");
 

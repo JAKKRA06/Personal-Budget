@@ -9,7 +9,6 @@
 #include "Users.h"
 #include "Markup.h"
 #include "PersonalBudget.h"
-#include "Date.h"
 
 using namespace std;
 
@@ -54,8 +53,10 @@ int main(){
                         budget.addExpense();
                         break;
                     case '3':
+                        budget.currentMonthBalance();
                         break;
                     case '4':
+                        budget.perviousMonthBalance();
                         break;
                     case '5':
                         budget.selectedPeroidBalance();
@@ -78,8 +79,8 @@ char signUpMenu(){
     char userChoice;
     system("cls");
 
-    cout << ">>>>> MENU <<<<<" << endl;
-    cout << "----------------" << endl;
+    cout << "     >>>>> MENU <<<<<" << endl;
+    cout << "--------------------------" << endl;
     cout << "1. SignUp" << endl;
     cout << "2. SignIn" << endl;
     cout << "9. Exit" << endl;

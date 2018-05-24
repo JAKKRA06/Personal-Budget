@@ -1,7 +1,7 @@
 #include "PersonalBudget.h"
 
-PersonalBudget::PersonalBudget(int userId)
-{
+PersonalBudget::PersonalBudget(int userId){
+
     try
     {
         if(userId <= 0)
@@ -23,7 +23,11 @@ PersonalBudget::PersonalBudget(int userId)
     }
 }
 
-PersonalBudget::~PersonalBudget(){;}
+PersonalBudget::~PersonalBudget(){
+
+    delete incomes;
+    delete expenses;
+}
 
 void PersonalBudget::addIncome(){
 
@@ -32,57 +36,110 @@ void PersonalBudget::addIncome(){
 
 void PersonalBudget::addExpense(){
 
-        expenses->addExpense();
+    expenses->addExpense();
 }
 
 void PersonalBudget::currentMonthBalance(){
 
-    ;
 
+    int startDate = 0; int lastDate = 0; int numberOfDaysOfTheCurrentMonth = 0;
+
+    startDate = date.getFirstDateInMonth(date.getCurrentYear(), date.getCurrentMonth());
+    lastDate = date.getLastDateInMonth(date.getCurrentYear(), date.getCurrentMonth());
+
+    system("cls");
+
+    cout << "------------------------------------------------------" << endl;
+    cout << "          >>> CURRENT MONTH BALANCE <<< " << endl;
+    cout << "------------------------------------------------------" << endl;
+
+    showBalance(startDate, lastDate);
+}
+
+void PersonalBudget::perviousMonthBalance(){
+
+    int year = date.getCurrentYear();
+    int month = date.getCurrentMonth();
+
+    if(month == 1)
+    {
+        year--;
+        month = 12;
+    }
+    else
+        month --;
+
+    int startDate = date.getFirstDateInMonth(year, month);
+    int lastdate = date.getLastDateInMonth(year, month);
+
+    system("cls");
+
+    cout << "------------------------------------------------------" << endl;
+    cout << "          >>> BALANCE FROM PREVIOUS MONTH <<< " << endl;
+    cout << "------------------------------------------------------" << endl;
+
+    showBalance(startDate, lastdate);
 }
 
 void PersonalBudget::selectedPeroidBalance(){
 
     system("cls");
-
-    string startDate = ""; string lastDate = "";
-    float sumOfIncomes = 0.0f;
-    float sumOfExpenses = 0.0f;
-    vector<Income> selectedIncomes;
-    vector<Expense> selectedExpenses;
-    int startDateNumber = 0; int lastDateNumber = 0;
     Conversion conversion;
     Date date;
+    int startDate = 0; int lastDate = 0;
+    bool isStartDateGreaterThanLastDate = false;
 
     cout << "------------------------------------------------------" << endl;
-    cout << "          >>> SELECTED PEROID BALANCE <<< " << endl;
+    cout << "          >>> BALANCE FROM SELECTED PEROID <<< " << endl;
     cout << "------------------------------------------------------" << endl;
-    cout << "Select peroid of time(YYYY-MM-DD)"; cin.sync(); cin.clear();
-    cout << endl << "From: "; getline(cin, startDate); cin.sync(); cin.clear();
-    cout << "To: "; getline(cin, lastDate);
 
-    startDateNumber = date.convertDateFromStringWithDashToInt(startDate);
-    lastDateNumber = date.convertDateFromStringWithDashToInt(lastDate);
+    do
+     {
+        cout << "----------START DATE----------" << endl;
+        startDate = date.enterDate();
+        cout << "----------LAST DATE-----------" << endl;
+        lastDate = date.enterDate();
 
+        if(startDate > lastDate)
+        {
+            isStartDateGreaterThanLastDate = true;
+            cout << endl << "Last date must be greater or equal than start date!" << endl;
+            cout << endl << "Please try again." << endl;
+        }
+        else
+            isStartDateGreaterThanLastDate = false;
+    }while(isStartDateGreaterThanLastDate == true);
 
-    selectedIncomes = incomes->getIncomesFromSelectedPeroid(startDateNumber, lastDateNumber);
-    selectedExpenses = expenses->getExpenseFromSelectedPeroid(startDateNumber, lastDateNumber);
+    showBalance(startDate, lastDate);
+}
 
-    cout << endl << "Incomes of selected peroid:  " << endl;
-    incomes->showSelectedIncomes(selectedIncomes);
-    cout << endl << "Expenses of selected peroid: " << endl;
-    expenses->showSelectedExpenses(selectedExpenses);
-    cout << endl;
+void PersonalBudget::showBalance(int startDate, int lastDate){
+
+    double sumOfIncomes = 0.0d;
+    double sumOfExpenses = 0.0d;
+    vector<Income> selectedIncomes;
+    vector<Expense> selectedExpenses;
+
+    selectedIncomes = incomes->getIncomesFromSelectedPeroid(startDate, lastDate);
+    selectedExpenses = expenses->getExpenseFromSelectedPeroid(startDate, lastDate);
 
     sumOfIncomes = incomes->getIncomesSum(selectedIncomes);
     sumOfExpenses = expenses->getExpensesSum(selectedExpenses);
 
-    cout << "Total incomes of selected peroid:   " << sumOfIncomes << endl;
-    cout << "Total expenses of selected peroid:  " << sumOfExpenses << endl;
-    cout << "Saving/Debt:                        " << sumOfIncomes-sumOfExpenses << endl;
+    cout << endl << "          >>>INCOMES<<<          " << endl;
+    cout << "---------------------------------" << endl;
+    incomes->showSelectedIncomes(selectedIncomes);
+
+    cout << endl << "          >>>EXPENSES<<<          " << endl;
+    cout << "----------------------------------" << endl;
+    expenses->showSelectedExpenses(selectedExpenses);
+    cout << endl;
+
+    cout << "Total incomes of selected peroid:   " << fixed << setprecision(2) << sumOfIncomes << endl;
+    cout << "Total expenses of selected peroid:  " << fixed << setprecision(2) << sumOfExpenses << endl;
+    cout << "Saving/Debt:                        " << fixed << setprecision(2) << sumOfIncomes-sumOfExpenses << endl;
     system("pause");
 }
-
 
 
 

@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <iomanip>
+#include <cmath>
 
 #include "IncomesFile.h"
 #include "Incomes.h"
@@ -20,12 +22,15 @@ class PersonalBudget
         void addIncome();
         void addExpense();
         void currentMonthBalance();
+        void perviousMonthBalance();
         void selectedPeroidBalance();
+        void showBalance(int startDate, int lastDate);
 
     private:
         int signInUserId;
         IncomesFile incomeFile;
         Incomes *incomes;
         Expenses *expenses;
+        Date date;
 };
 #endif // PERSONALBUDGET_H

@@ -21,7 +21,7 @@ int Conversion::stringToInt(string date){
 string Conversion::doubleToString(double amount){
 
     ostringstream str;
-    str << amount;
+    str << fixed << setprecision(2) << amount;
     return str.str();
 
 }

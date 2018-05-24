@@ -3,7 +3,6 @@
 IncomesFile::IncomesFile(){
 
     this->fileName = "incomes.xml";
-
 }
 
 IncomesFile::~IncomesFile(){;}

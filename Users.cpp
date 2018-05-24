@@ -81,7 +81,8 @@ void Users::signIn(){
         itr++;
     }
     if(doesUserExist == false)
-            cout << "There is no user" << endl;
+        cout << "There is no user" << endl;
+
     system("pause");
 }
 
@@ -115,7 +116,7 @@ bool Users::checkIfLoginExist(string login){
 
     vector<User>::iterator itr = usersVec.begin();
 
-    while(itr != usersVec.end()) {
+    while(itr != usersVec.end()){
 
         if(itr->User::getUserLogin() == user.getUserLogin()) {
 
@@ -123,7 +124,8 @@ bool Users::checkIfLoginExist(string login){
             return true;
         } else
             itr++;
-    }  return false;
+    }
+    return false;
 }
 
 void Users::signOut(){

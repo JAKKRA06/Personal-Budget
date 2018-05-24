@@ -55,7 +55,7 @@ vector<Expense> Expenses::getExpenseFromSelectedPeroid(int startDate, int lastDa
     {
         for(vector<Expense>::iterator itr = expenseVec.begin(); itr != expenseVec.end(); itr++)
         {
-            if(itr -> Expense::getDate() >= startDate && itr -> Expense::getDate() <= lastDate)
+            if(itr->Expense::getDate() >= startDate && itr->Expense::getDate() <= lastDate)
             {
                 selectedExpenses.push_back(*itr);
             }
@@ -72,13 +72,11 @@ void Expenses::showSelectedExpenses(vector<Expense> &selectedExpenses){
 
         for(vector<Expense>::iterator itr = selectedExpenses.begin(); itr != selectedExpenses.end(); itr++)
         {
-            cout << "Date:          " << date.convertDateFromIntToStringWithDash(itr -> Expense::getDate()) << endl;
-            cout << "Item:          " << itr -> Expense::getItem() << endl;
-            cout << "Amount:        " << itr -> Expense::getAmount() << endl;
+            cout << "Date:          " << date.convertDateFromIntToStringWithDash(itr->Expense::getDate()) << endl;
+            cout << "Item:          " << itr->Expense::getItem() << endl;
+            cout << "Amount:        " << itr->Expense::getAmount() << endl;
             cout << "---------------------------" << endl;
-
         }
-
     }
     else
         cout << endl << "You have no incomes in the selected peroid." << endl;
@@ -90,7 +88,7 @@ float Expenses::getExpensesSum(vector<Expense> &selectedExpenses){
 
     for(vector<Expense>::iterator itr = selectedExpenses.begin(); itr != selectedExpenses.end(); itr++)
     {
-        sum += itr -> Expense::getAmount();
+        sum += itr->Expense::getAmount();
     }
     return sum;
 }

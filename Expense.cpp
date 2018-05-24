@@ -6,7 +6,7 @@ Expense::Expense(){
     userId = 0;
     date = 0;
     item = "";
-    amount = 0.0f;
+    amount = 0.0d;
 }
 
 Expense::~Expense(){;}

@@ -4,7 +4,7 @@ Amount::Amount(){;}
 
 Amount::~Amount(){;}
 
-string Amount::changeCommaToDot(string amount) {
+string Amount::changeCommaToDot(string amount){
 
     for(int counter = 0; counter < amount.length(); counter++) {
 
@@ -18,11 +18,16 @@ string Amount::changeCommaToDot(string amount) {
 double Amount::enterAmount(){
 
     string amount = "";
+    Conversion conversion;
     do
      {
-        cout << "Enter amount: "; cin.sync(); cin.clear();
+        cout << endl << "Enter amount: "; cin.sync(); cin.clear();
         getline(cin,amount);
-     }while(amount == "");
+        if(conversion.stringToInt(amount) <= 0)
+        {
+            cout << "Entered amount should be greater or equal 0. Please try again." << endl;
+        }
+     }while(conversion.stringToInt(amount) <= 0);
 
     if(isThereComma(amount) == true)
     {

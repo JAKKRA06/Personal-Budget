@@ -1,5 +1,4 @@
 #include "UserFile.h"
-#include "Markup.h"
 
 UserFile::UserFile(){
 
@@ -77,7 +76,6 @@ void UserFile::saveAllUserToFile(vector<User> &usersVec){
             users.SetDoc("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
             users.AddElem("USERS");
         }
-
         users.IntoElem();
         users.AddElem("USER");
         users.IntoElem();
@@ -91,5 +89,3 @@ void UserFile::saveAllUserToFile(vector<User> &usersVec){
         users.Save(fileName);
     }
 }
-
-

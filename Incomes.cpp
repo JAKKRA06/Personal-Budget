@@ -22,7 +22,6 @@ Incomes::Incomes(int loggedInUserId){
         system("pause");
         exit(0);
     }
-
 }
 
 Incomes::~Incomes(){
@@ -41,19 +40,17 @@ void Incomes::addIncome(){
     cout << "          >>> ADD NEW INCOME <<< " << endl;
     cout << "------------------------------------------------------" << endl;
 
-
     income = enterIncomeData();
 
     incomeVec.push_back(income);
     incomesFile.addIncomeToFile(income);
 
-    cout << "Income has been added." << endl << endl;
+    cout << endl << "Income has been added." << endl;
     system("pause");
-
 }
 
-vector<Income> Incomes::getIncomesFromSelectedPeroid(int startDate, int lastDate)
-{
+vector<Income> Incomes::getIncomesFromSelectedPeroid(int startDate, int lastDate){
+
     vector<Income> selectedIncomes;
 
     if(!incomeVec.empty())
@@ -69,17 +66,17 @@ vector<Income> Incomes::getIncomesFromSelectedPeroid(int startDate, int lastDate
     return selectedIncomes;
 }
 
-void Incomes::showSelectedIncomes(vector<Income> &selectedIncomes)
-{
+void Incomes::showSelectedIncomes(vector<Income> &selectedIncomes){
+
     if(!selectedIncomes.empty())
     {
         sortIncomesByDateInAscendingOrder(selectedIncomes);
 
         for(vector<Income>::iterator itr = selectedIncomes.begin(); itr != selectedIncomes.end(); itr++)
         {
-            cout << "Date:          " << date.convertDateFromIntToStringWithDash(itr -> Income::getDate()) << endl;
-            cout << "Item:          " << itr -> Income::getItem() << endl;
-            cout << "Amount:        " << itr -> Income::getAmount() << endl;
+            cout << "Date:          " << date.convertDateFromIntToStringWithDash(itr->Income::getDate()) << endl;
+            cout << "Item:          " << itr->Income::getItem() << endl;
+            cout << "Amount:        " << itr->Income::getAmount() << endl;
             cout << "---------------------------" << endl;
         }
 
@@ -88,15 +85,16 @@ void Incomes::showSelectedIncomes(vector<Income> &selectedIncomes)
         cout << endl << "You have no incomes in the selected peroid." << endl;
 }
 
-float Incomes::getIncomesSum(vector<Income> &selectedIncomes)
-{
+float Incomes::getIncomesSum(vector<Income> &selectedIncomes){
+
     float sum = 0.0f;
     for(vector<Income>::iterator itr = selectedIncomes.begin(); itr != selectedIncomes.end(); itr++)
     {
-        sum += itr -> Income::getAmount();
+        sum += itr->Income::getAmount();
     }
     return sum;
 }
+
 Income Incomes::enterIncomeData(){
 
     Income income;
@@ -110,8 +108,8 @@ Income Incomes::enterIncomeData(){
     return income;
 }
 
-void Incomes::sortIncomesByDateInAscendingOrder(vector<Income> &selectedIncomes)
-{
+void Incomes::sortIncomesByDateInAscendingOrder(vector<Income> &selectedIncomes){
+
     sort(selectedIncomes.begin(), selectedIncomes.end(), [](Income& firstIncome, Income& secondIncome)
     {
         return firstIncome.getDate() < secondIncome.getDate();

@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 
 #include "Date.h"
 #include "Amount.h"

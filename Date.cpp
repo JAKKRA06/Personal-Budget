@@ -1,17 +1,24 @@
 #include "Date.h"
 
-Date::Date(){;}
+Date::Date(){
+
+    dayFromUser = 0;
+    monthFromUser = 0;
+}
 
 Date::~Date(){;}
 
-int Date::getCurrentDate()
-{
+int Date::getCurrentDate(){
+
     Conversion conversion;
     string currentDate = ""; string year = ""; string month = ""; string day = "";
+
     time_t now = time(NULL);
     tm *ltm = localtime(&now);
+
     year = conversion.intToString(1900 + ltm->tm_year);
     month = conversion.intToString(1 + ltm->tm_mon);
+
     if(month.length() < 2)
     {
         month = "";
@@ -23,41 +30,127 @@ int Date::getCurrentDate()
     return conversion.stringToInt(currentDate);
 }
 
-string Date::changeDateSeparatedByDashToNumber(string date)
-{
+string Date::changeDateSeparatedByDashToNumber(string date){
+
     date.erase(date.begin()+4);
     date.erase(date.begin()+6);
 
     return date;
 }
 
-bool Date::checkDate(string enteredDateFromUser)
-{
+void Date::setDayFromUser(int day){
+
+    this->dayFromUser = day;
+}
+
+void Date::setMonthFromUser(int month){
+
+    this->monthFromUser = month;
+}
+
+int Date::getDayFromUser(){
+
+    return dayFromUser;
+}
+
+int Date::getMonthFromUser(){
+
+    return monthFromUser;
+}
+
+void Date::separateDateFromUser(string date){
+
+    Conversion conversion;
+    string month = "";string day = "";
+
+    for(int counter = 0; counter < date.length(); counter++){
+
+        if(counter == 5){
+                if(date[counter] == '0'){;}
+                else{ month += date[counter];}
+        }
+        else if(counter == 6){ month += date[counter];}
+        else if(counter == 8){ day += date[counter];}
+        else if(counter == 9){ day += date[counter];}
+    }
+
+    setDayFromUser(conversion.stringToInt(day));
+    setMonthFromUser(conversion.stringToInt(month));
+}
+
+int Date::getNumberOfDaysOfMonth(int numberOfMonth){
+
+    time_t now = time(NULL);
+    tm *ltm = localtime(&now);
+    int year = getCurrentYear();
+    int numberOfDaysOfFebruary = 29;
+
+    map<int, int> month;
+    month [1] = 31;
+    month [2] = 28;
+    month [3] = 31;
+    month [4] = 30;
+    month [5] = 31;
+    month [6] = 30;
+    month [7] = 31;
+    month [8] = 31;
+    month [9] = 30;
+    month [10] = 31;
+    month [11] = 30;
+    month [12] = 31;
+
+     if((year%4 == 0 && year%100 != 0) || year%400 == 0)
+     {
+         if(numberOfMonth == 2)
+            return numberOfDaysOfFebruary;
+        else
+            return month[numberOfMonth];
+     }
+     else
+        return month[numberOfMonth];
+}
+
+bool Date::checkDate(string enteredDateFromUser){
+
     string startDate = "20000101"; string lastDate = "";
-    int numberOfDaysOfTheCurrentMonth = getNumberOfDaysOfTheMonth();
+
+    separateDateFromUser(enteredDateFromUser);
+
+    int numberOfMonth = getCurrentMonth();
+    int numberOfDaysOfTheCurrentMonth = getNumberOfDaysOfTheCurrentMonth();
     lastDate = setLastDate(numberOfDaysOfTheCurrentMonth);
 
     string lastDateWithoutDashes = changeDateSeparatedByDashToNumber(lastDate);
+    enteredDateFromUser = changeDateSeparatedByDashToNumber(enteredDateFromUser);
 
-
-     if((atoi(enteredDateFromUser.c_str()) >= atoi(startDate.c_str())) && (atoi(enteredDateFromUser.c_str()) <= atoi(lastDate.c_str())))
+    if(getDayFromUser() <= getNumberOfDaysOfMonth(getMonthFromUser()))
     {
-        cout << "Entered date from user is correct" << endl;
-        return true;
+        if((atoi(enteredDateFromUser.c_str()) >= atoi(startDate.c_str())) && (atoi(enteredDateFromUser.c_str()) <= atoi(lastDateWithoutDashes.c_str())) && getMonthFromUser() < 12)
+        {
+            return true;
+        }
+        else
+        {
+            cout << "Entered date form user is not correct." << endl;
+            cout << "Enter date form 2000-01-01 to the last day of current month." << endl;
+            return false;
+        }
     }
     else
     {
-        cout << "Entered date form user is not correct" << endl;
+        cout << "Entered date form user is not correct." << endl;
+        cout << "Enter date form 2000-01-01 to the last day of current month." << endl;
         return false;
     }
 }
 
-string Date::setLastDate(int numberOfDaysOfTheCurrentMonth)
-{
+string Date::setLastDate(int numberOfDaysOfTheCurrentMonth){
+
     Conversion conversion;
     string lastDate = ""; string year = ""; string month = ""; string day = "";
     time_t now = time(NULL);
     tm *ltm = localtime(&now);
+
     year = conversion.intToString(1900 + ltm->tm_year);
     month = conversion.intToString(1 + ltm->tm_mon);
 
@@ -71,9 +164,10 @@ string Date::setLastDate(int numberOfDaysOfTheCurrentMonth)
     return lastDate;
 }
 
-int Date::getNumberOfDaysOfTheMonth()
-{
+int Date::getNumberOfDaysOfTheCurrentMonth(){
+
     int numberOfTheMonth = 0;
+
     time_t now = time(NULL);
     tm *ltm = localtime(&now);
     numberOfTheMonth = 1 + ltm->tm_mon;
@@ -95,6 +189,27 @@ int Date::getNumberOfDaysOfTheMonth()
     return month[numberOfTheMonth];
 }
 
+int Date::getCurrentYear(){
+
+    int currentYear = 0;
+
+    time_t now = time(NULL);
+    tm *ltm = localtime(&now);
+    currentYear = 1900 + ltm->tm_year;
+    return currentYear;
+}
+
+int Date::getCurrentMonth(){
+
+    int currentMonth = 0;
+
+    time_t now = time(NULL);
+    tm *ltm = localtime(&now);
+    currentMonth = 1 + ltm->tm_mon;
+
+    return currentMonth;
+}
+
 int Date::convertDateFromStringWithDashToInt(string enteredDate){
 
     Conversion conversion;
@@ -108,29 +223,22 @@ int Date::enterDate(){
 
     Conversion conversion;
     string date = "";
-    //bool correctDate = false;
+    bool correctDate = false;
     do
     {
-        cout << endl << "Enter date (YYYY-MM-DD) :"; cin.sync(); cin.clear();
+        cout << endl << "Enter date (YYYY-MM-DD): "; cin.sync(); cin.clear();
         getline(cin, date);
-    }while(date.length() < 10);\
+        correctDate = checkDate(date);
+
+    }while(correctDate == false);
 
     date = changeDateSeparatedByDashToNumber(date);
 
     return conversion.stringToInt(date);
-/*
-    do
-    {
-        correctDate = checkDate(date);
-        if(correctDate == true)
-        {
-        }
-    }while(correctDate == false);
-*/
 }
 
-string Date::convertDateFromIntToStringWithDash(int date)
-{
+string Date::convertDateFromIntToStringWithDash(int date){
+
     Conversion conversion;
     string newDate = "";
     newDate = conversion.intToString(date);
@@ -138,4 +246,60 @@ string Date::convertDateFromIntToStringWithDash(int date)
     newDate.insert(4,"-");
     newDate.insert(7,"-");
     return newDate;
+}
+
+int Date::getFirstDateInMonth(int year, int month){
+
+    Conversion conversion;
+    int firstDate = 0;
+    string date = "";
+    int days = 1;
+
+    if(year > 2000)
+    {
+        date += conversion.intToString(year);
+    }
+    if(month < 13)
+    {
+        if(month >= 1 && month <= 9)
+        {
+            date += "0" + conversion.intToString(month);
+        }
+        else
+            date += conversion.intToString(month);
+    }
+    if(days >= 1 && days <= 9)
+    {
+        date += "0" + conversion.intToString(days);
+    }
+    else
+        date += conversion.intToString(days);
+
+    firstDate = conversion.stringToInt(date);
+    return firstDate;
+}
+
+int Date::getLastDateInMonth(int year, int month){
+
+    Conversion conversion;
+    int lastDate = 0;
+    string date = "";
+    int days = getNumberOfDaysOfMonth(month);
+
+    if(year > 2000)
+    {
+        date += conversion.intToString(year);
+    }
+    if(month < 13)
+    {
+        if(month >= 1 && month <= 9)
+        {
+            date += "0" + conversion.intToString(month);
+        }
+        else
+            date += conversion.intToString(month);
+    }
+    date += conversion.intToString(days);
+
+    return lastDate = conversion.stringToInt(date);
 }
