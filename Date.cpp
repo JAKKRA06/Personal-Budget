@@ -25,6 +25,12 @@ int Date::getCurrentDate(){
         month += "0" + conversion.intToString(1 + ltm->tm_mon);
     }
     day = conversion.intToString(ltm->tm_mday);
+    if(day.length() < 2)
+    {
+        day = "";
+        day += "0" + conversion.intToString(ltm->tm_mday);
+    }
+
     currentDate =  year + month + day;
 
     return conversion.stringToInt(currentDate);
@@ -252,30 +258,32 @@ int Date::getFirstDateInMonth(int year, int month){
 
     Conversion conversion;
     int firstDate = 0;
-    string date = "";
+    string stringDate = "";
     int days = 1;
+    time_t date = time(0);
+    struct tm *now = localtime(&date);
 
-    if(year > 2000)
+    if(year >= 2000 & year <= (now->tm_year + 1900))
     {
-        date += conversion.intToString(year);
+        stringDate += conversion.intToString(year);
     }
     if(month < 13)
     {
         if(month >= 1 && month <= 9)
         {
-            date += "0" + conversion.intToString(month);
+            stringDate += "0" + conversion.intToString(month);
         }
         else
-            date += conversion.intToString(month);
+            stringDate += conversion.intToString(month);
     }
     if(days >= 1 && days <= 9)
     {
-        date += "0" + conversion.intToString(days);
+        stringDate += "0" + conversion.intToString(days);
     }
     else
-        date += conversion.intToString(days);
+        stringDate += conversion.intToString(days);
 
-    firstDate = conversion.stringToInt(date);
+    firstDate = conversion.stringToInt(stringDate);
     return firstDate;
 }
 
